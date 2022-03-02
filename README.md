@@ -1,15 +1,8 @@
-<!--
- * @Author: Han Liu
- * @Date: 2022-03-01 19:52:50
- * @LastEditTime: 2022-03-02 22:16:10
- * @LastEditors: Han Liu
- * @Description: 
- * @FilePath: /JayChat/README.md
- * 不积跬步 无以至千里
--->
 # JayChat
 基于muduo网络库的集群聊天服务器
 
+#### nginx负载均衡配置
+```
 # nginx tcp loadbalance config
 stream {
     upstream MyServer {
@@ -26,3 +19,4 @@ stream {
         tcp_nodelay on;
     }
 }
+```

@@ -1,7 +1,7 @@
 /*
  * @Author: Han Liu
  * @Date: 2022-03-01 19:09:58
- * @LastEditTime: 2022-03-01 19:18:52
+ * @LastEditTime: 2022-03-02 13:41:22
  * @LastEditors: Han Liu
  * @Description:
  * @FilePath: /JayChat/include/server/model/groupmodel.hpp
@@ -11,12 +11,14 @@
 #define __GROUPMODEL_H
 
 #include "group.hpp"
+#include "db.hpp"
 
 namespace JayChat
 {
 
     class GroupModel
     {
+    public:
         bool createGroup(Group &group);                            // 创建群组
         void addGroup(int userid, int groupid, std::string role);  // 加入群组
         std::vector<Group> queryGroups(int userid);                // 查询用户所在群组信息

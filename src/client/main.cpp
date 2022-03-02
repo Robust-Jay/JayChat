@@ -1,7 +1,7 @@
 /*
  * @Author: Han Liu
  * @Date: 2022-03-02 15:17:20
- * @LastEditTime: 2022-03-02 18:40:50
+ * @LastEditTime: 2022-03-02 21:57:25
  * @LastEditors: Han Liu
  * @Description:
  * @FilePath: /JayChat/src/client/main.cpp
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
 {
     if (argc < 3)
     {
-        std::cerr << "command invalid! example: ./JayChatClient 127.0.0.1 6000" << std::endl;
+        std::cerr << "command invalid! example: ./JayChatClient IpAddress Port" << std::endl;
         exit(-1);
     }
 

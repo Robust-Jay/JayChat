@@ -1,7 +1,7 @@
 /*
  * @Author: Han Liu
  * @Date: 2022-02-27 17:06:35
- * @LastEditTime: 2022-02-28 19:05:39
+ * @LastEditTime: 2022-03-02 21:56:38
  * @LastEditors: Han Liu
  * @Description: 
  * @FilePath: /JayChat/src/server/main.cpp
@@ -19,8 +19,13 @@ void resethandler(int)
     exit(0);
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+    if (argc < 2)
+    {
+        std::cerr << "command invalid! example: ./JayChatServer 10000" << std::endl;
+    }
+
     struct sigaction act;
     act.sa_handler = resethandler;
     sigemptyset(&act.sa_mask);
@@ -29,7 +34,7 @@ int main()
     signal(SIGINT, resethandler);
 
     EventLoop loop;
-    InetAddress addr("0.0.0.0", 10000);
+    InetAddress addr(atoi(argv[1])); // TcpServer listening
     ChatServer server(&loop, addr, "JayChatServer");
 
     server.start();

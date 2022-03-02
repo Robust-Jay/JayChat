@@ -1,7 +1,7 @@
 /*
  * @Author: Han Liu
  * @Date: 2022-02-27 18:31:35
- * @LastEditTime: 2022-03-02 13:58:57
+ * @LastEditTime: 2022-03-02 16:49:08
  * @LastEditors: Han Liu
  * @Description:
  * @FilePath: /JayChat/src/server/chatservice.cpp
@@ -81,7 +81,7 @@ namespace JayChat
                 json response;
                 response["msgid"] = LOGIN_MSG_ACK;
                 response["errno"] = 2;
-                response["errmsg"] = "该账号已经登录，请输入新账号";
+                response["errmsg"] = "this account is using, input another!";
                 conn->send(response.dump());
             }
             else
@@ -124,6 +124,34 @@ namespace JayChat
                     response["friends"] = u_js_vec;
                 }
 
+                // 查询用户的群组消息
+                std::vector<Group> groupuserVec = __groupModel.queryGroups(id);
+                if (!groupuserVec.empty())
+                {
+                    std::vector<std::string> groupV;
+                    for (Group &group : groupuserVec)
+                    {
+                        json grpjson;
+                        grpjson["id"] = group.getId();
+                        grpjson["groupname"] = group.getName();
+                        grpjson["groupdesc"] = group.getDesc();
+
+                        std::vector<std::string> userV;
+                        for (GroupUser &user : group.getUsers())
+                        {
+                            json ujson;
+                            ujson["id"] = user.getId();
+                            ujson["name"] = user.getName();
+                            ujson["state"] = user.getState();
+                            ujson["role"] = user.getRole();
+                            userV.push_back(ujson.dump());
+                        }
+                        grpjson["users"] = userV;
+                        groupV.push_back(grpjson.dump());
+                    }
+                    response["groups"] = groupV;
+                }
+
                 conn->send(response.dump());
             }
         }
@@ -133,7 +161,7 @@ namespace JayChat
             json response;
             response["msgid"] = LOGIN_MSG_ACK;
             response["errno"] = 1;
-            response["errmsg"] = "用户名或密码错误";
+            response["errmsg"] = "name or password is invalid!";
             conn->send(response.dump());
         }
     }
@@ -172,6 +200,31 @@ namespace JayChat
             conn->send(response.dump());
         }
     }
+
+    /**
+     * @description: 处理注销业务
+     * @param {TcpConnectionPtr} &conn
+     * @param {json} &js
+     * @param {Timestamp} time
+     * @return {*}
+     */    
+    void ChatService::logout(const TcpConnectionPtr &conn, json &js, Timestamp time)
+    {
+        int userid = js["id"].get<int>();
+        {
+            std::lock_guard<std::mutex> lock(__connMutex);
+            auto it = __userConnctionMap.find(userid);
+            if (it != __userConnctionMap.end())
+            {
+                __userConnctionMap.erase(it);
+            }
+        }
+
+        // 更新用户的状态信息
+        User user(userid, "", "", "offline");
+        __userModel.updateState(user);
+    }
+
 
     /**
      * @description: 处理客户端异常退出

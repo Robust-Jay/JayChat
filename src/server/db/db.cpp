@@ -1,7 +1,7 @@
 /*
  * @Author: Han Liu
  * @Date: 2022-02-27 23:28:43
- * @LastEditTime: 2022-02-28 12:36:02
+ * @LastEditTime: 2022-03-02 18:44:46
  * @LastEditors: Han Liu
  * @Description:
  * @FilePath: /JayChat/src/server/db/db.cpp
@@ -11,6 +11,12 @@
 
 namespace JayChat
 {
+
+    // 数据库配置信息
+    static string server = "127.0.0.1";
+    static string user = "robustJay";
+    static string password = "admin";
+    static string dbname = "chat";
 
     /**
      * @description: 构造函数

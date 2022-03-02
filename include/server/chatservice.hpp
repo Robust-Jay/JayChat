@@ -1,7 +1,7 @@
 /*
  * @Author: Han Liu
  * @Date: 2022-02-27 18:07:34
- * @LastEditTime: 2022-03-02 13:32:35
+ * @LastEditTime: 2022-03-02 16:03:55
  * @LastEditors: Han Liu
  * @Description:
  * @FilePath: /JayChat/include/server/chatservice.hpp
@@ -37,6 +37,7 @@ namespace JayChat
 
         void login(const TcpConnectionPtr &conn, json &js, Timestamp time);       // 处理登录业务
         void reg(const TcpConnectionPtr &conn, json &js, Timestamp time);         // 处理注册业务
+        void logout(const TcpConnectionPtr &conn, json &js, Timestamp time);      // 处理注销业务
         void oneChat(const TcpConnectionPtr &conn, json &js, Timestamp time);     // 一对一聊天业务
         void addFriend(const TcpConnectionPtr &conn, json &js, Timestamp time);   // 添加好友业务
         void createGroup(const TcpConnectionPtr &conn, json &js, Timestamp time); // 创建群组业务

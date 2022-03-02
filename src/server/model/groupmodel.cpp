@@ -1,7 +1,7 @@
 /*
  * @Author: Han Liu
  * @Date: 2022-03-01 19:19:45
- * @LastEditTime: 2022-03-02 11:32:04
+ * @LastEditTime: 2022-03-02 15:08:32
  * @LastEditors: Han Liu
  * @Description:
  * @FilePath: /JayChat/src/server/model/groupmodel.cpp
@@ -42,7 +42,7 @@ namespace JayChat
      * @param {string} role
      * @return {*}
      */
-    void addGroup(int userid, int groupid, std::string role)
+    void GroupModel::addGroup(int userid, int groupid, std::string role)
     {
         // 组装sql语句
         char sql[1024] = {0};
@@ -144,4 +144,4 @@ namespace JayChat
         return idVec;
     }
 
-} // JayChat
+} // namespace JayChat

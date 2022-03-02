@@ -1,7 +1,7 @@
 /*
  * @Author: Han Liu
  * @Date: 2022-02-27 23:21:01
- * @LastEditTime: 2022-02-28 12:38:10
+ * @LastEditTime: 2022-03-02 18:44:28
  * @LastEditors: Han Liu
  * @Description: 数据库操作
  * @FilePath: /JayChat/include/server/db/db.hpp
@@ -16,12 +16,6 @@
 #include <string>
 
 using namespace muduo;
-
-// 数据库配置信息
-static string server = "127.0.0.1";
-static string user = "robustJay";
-static string password = "admin";
-static string dbname = "chat";
 
 namespace JayChat
 {

@@ -1,7 +1,7 @@
 /*
  * @Author: Han Liu
  * @Date: 2022-02-27 18:26:11
- * @LastEditTime: 2022-03-02 13:10:29
+ * @LastEditTime: 2022-03-02 16:32:34
  * @LastEditors: Han Liu
  * @Description: server和client的公共文件
  * @FilePath: /JayChat/include/public.hpp
@@ -17,6 +17,7 @@ namespace JayChat
     {
         LOGIN_MSG = 1,  // 登录消息
         LOGIN_MSG_ACK,  // 登录响应消息
+        LOGOUT_MSG,     // 注销消息
         REG_MSG,        // 注册消息
         REG_MSG_ACK,    // 注册响应消息
         ONE_CHAT_MSG,   // 一对一聊天消息

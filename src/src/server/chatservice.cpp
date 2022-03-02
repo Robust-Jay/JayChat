@@ -1,7 +1,7 @@
 /*
  * @Author: Han Liu
  * @Date: 2022-02-27 18:31:35
- * @LastEditTime: 2022-03-02 13:33:21
+ * @LastEditTime: 2022-03-02 13:58:57
  * @LastEditors: Han Liu
  * @Description:
  * @FilePath: /JayChat/src/server/chatservice.cpp
@@ -262,8 +262,19 @@ namespace JayChat
      * @param {Timestamp} time
      * @return {*}
      */
-    void createGroup(const TcpConnectionPtr &conn, json &js, Timestamp time)
+    void ChatService::createGroup(const TcpConnectionPtr &conn, json &js, Timestamp time)
     {
+        int userid = js["id"].get<int>();
+        std::string name = js["groupname"];
+        std::string desc = js["groupdesc"];
+
+        // 存储新创建的群组信息
+        Group group(-1, name, desc);
+        if (__groupModel.createGroup(group))
+        {
+            // 存储群组创建人信息
+            __groupModel.addGroup(userid, group.getId(), "creator");
+        }
     }
 
     /**
@@ -273,8 +284,11 @@ namespace JayChat
      * @param {Timestamp} time
      * @return {*}
      */
-    void addGroup(const TcpConnectionPtr &conn, json &js, Timestamp time)
+    void ChatService::addGroup(const TcpConnectionPtr &conn, json &js, Timestamp time)
     {
+        int userid = js["id"].get<int>();
+        int groupid = js["groupid"].get<int>();
+        __groupModel.addGroup(userid, groupid, "normal");
     }
 
     /**
@@ -284,8 +298,27 @@ namespace JayChat
      * @param {Timestamp} time
      * @return {*}
      */
-    void groupChat(const TcpConnectionPtr &conn, json &js, Timestamp time)
+    void ChatService::groupChat(const TcpConnectionPtr &conn, json &js, Timestamp time)
     {
+        int userid = js["id"].get<int>();
+        int groupid = js["groupid"].get<int>();
+        std::vector<int> idVec = __groupModel.queryGroupUsers(userid, groupid);
+
+        std::lock_guard<std::mutex> lock(__connMutex);
+        for(int id : idVec)
+        {
+            auto it = __userConnctionMap.find(id);
+            if (it != __userConnctionMap.end())
+            {
+                // 转发消息
+                it->second->send(js.dump());
+            }
+            else
+            {
+                // 存储离线消息
+                __offlinemsgModel.insert(id, js.dump());
+            }
+        }
     }
 
 } // namespace JayChat

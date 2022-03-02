@@ -5,7 +5,7 @@
 1. muduo (依赖boost)：网络库
 2. json (位于thirdparty文件夹)：序列化和反序列化
 3. mysql：存储项目数据（user、offlinemessage、friend、allgroup、groupuser）
-4. redis：基于发布-订阅实现集群服务器之间的通信
+4. redis（C++使用hiredis进行数据库操作）：基于发布-订阅实现集群服务器之间的通信
 5. nginx：负载均衡
 
 ### nginx负载均衡配置
